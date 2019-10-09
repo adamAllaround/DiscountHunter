@@ -14,7 +14,7 @@ class CurrencyStrategyTest extends Specification {
         Document document = Jsoup.parse(html)
         when: "Extracting the amount"
         numberFinder.findValidNumber("123PLN") >> ["123"]
-        def result = currencyStrategy.findPrice(document)
+        def result = currencyStrategy.findHtmlElements(document)
         then: "The result contains the value"
         result.isPresent()
         result.get() == BigDecimal.valueOf(123L)

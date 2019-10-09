@@ -11,14 +11,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-class CurrencyStrategy implements PriceExtractionStrategy {
+class CurrencyStrategy implements HtmlElementFinder {
     private final NumberFinder numberFinder;
 
     private static final String CURRENCY_SYMBOL = "[(\\p{Sc})(eur)(pln)(usd)(dkk)(gbp)]";
     private static final String VALID_AMOUNT_NUMBER = "^[-]?([1-9]{1}[0-9]{0,}(\\.[0-9]{0,2})?|0(\\.[0-9]{0,2})?|\\.[0-9]{1,2})$";
 
-    @Override
-    public Optional<BigDecimal> findPrice(Document html) {
+    public Optional<BigDecimal> findHtmlElements(Document html) {
         Pattern currencyPattern = Pattern.compile(CURRENCY_SYMBOL, Pattern.CASE_INSENSITIVE);
         Elements elementsMatchingText = html.getElementsMatchingOwnText(currencyPattern);
 
@@ -37,5 +36,10 @@ class CurrencyStrategy implements PriceExtractionStrategy {
 
     private boolean matchesPriceFormat(String element) {
         return element.matches(VALID_AMOUNT_NUMBER);
+    }
+
+    @Override
+    public Elements findHtmlElements(Elements html) {
+        return null;
     }
 }
