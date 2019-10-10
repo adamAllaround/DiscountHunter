@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,6 +18,6 @@ public class WebPage extends ModelBase {
     @JoinColumn(name = "USER_ID")
     private User userOwner;
     @OneToMany (mappedBy = "page")
-    private Set<WebPagePriceDetails> webPage;
+    private Set<WebPagePriceDetails> priceDetails;
     private String url;
 }
