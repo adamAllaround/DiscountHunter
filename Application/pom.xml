@@ -8,9 +8,8 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>Application</artifactId>
-
+    <packaging>jar</packaging>
     <build>
         <plugins>
             <plugin>
@@ -19,6 +18,13 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exec</classifier>
                 </configuration>
             </plugin>
         </plugins>

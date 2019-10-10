@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @Getter
 @Setter
-public class WebPagePriceDetails {
+public class WebPagePriceDetails extends ModelBase {
     @ManyToOne(optional = false)
     @JoinColumn(name = "PAGE_ID")
     private WebPage page;
