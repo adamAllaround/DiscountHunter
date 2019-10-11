@@ -22,7 +22,7 @@ class CurrencySymbolElementFinderDecoratorTest extends Specification {
 
     def "Finding html elements when none contain currency symbols"() {
         given: "An html of several tags with price CSS class"
-        def htmlString = '<p class="product price"><span class="price">150</span><span class="price discount">200</span></p>'
+        def htmlString = '<p class="product price"><span class="price">150</span><span class="price discount">200</span><span>some price</p>'
         def document = Jsoup.parse(htmlString)
         htmlElementFinder.findHtmlElements(_) >> document.getAllElements()
         when: "Finding html elements with currency"

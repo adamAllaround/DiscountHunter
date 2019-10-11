@@ -31,6 +31,7 @@ public class JpaConfig {
         return emf;
     }
 
+    @Bean
     protected DataSource createDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.h2.Driver");

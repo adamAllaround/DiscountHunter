@@ -23,13 +23,13 @@ public class WebPagePriceDetails extends ModelBase {
 
         WebPagePriceDetails that = (WebPagePriceDetails) o;
 
-        if (!page.getId().equals(that.page.getId())) return false;
+        if (!page.equals(that.page)) return false;
         return price.equals(that.price);
     }
 
     @Override
     public int hashCode() {
-        int result = page.getId().hashCode();
+        int result = page.hashCode();
         result = 31 * result + price.hashCode();
         return result;
     }
