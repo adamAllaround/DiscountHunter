@@ -50,7 +50,7 @@ class BatchJobConfiguration {
 
     ItemReader<WebPage> reader() {
         return new JpaPagingItemReaderBuilder<WebPage>()
-                .queryString("select w from WebPage w join fetch w.priceDetails")
+                .queryString("select w from WebPage w left join fetch w.priceDetails")
                 .entityManagerFactory(entityManagerFactory)
                 .name("someName")
                 .build();

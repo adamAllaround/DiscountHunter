@@ -69,5 +69,10 @@
             <version>2.6</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.9.16</version>
+        </dependency>
     </dependencies>
 </project>

@@ -48,14 +48,9 @@ public class JpaConfig {
 
     private Properties createHibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+        properties.setProperty("javax.persistence.schema-generation.database.action", "none");
         properties.setProperty(
                 "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
         return properties;
-    }
-
-    @Bean
-    PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
     }
 }
