@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @SpringBatchTest
-@ContextConfiguration(classes = [TestJpaConfig, AppConfig, BatchJobConfiguration])
+@ContextConfiguration(classes = [TestJpaConfig, AppConfig, ExamineRecentPricesJobConfiguration])
 class ExamineRecentPricesJobTest extends Specification {
     @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils

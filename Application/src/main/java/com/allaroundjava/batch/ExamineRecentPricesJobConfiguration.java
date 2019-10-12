@@ -20,9 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.persistence.EntityManagerFactory;
 
 @Configuration
-@EnableBatchProcessing
 @RequiredArgsConstructor
-class BatchJobConfiguration {
+class ExamineRecentPricesJobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -48,7 +47,7 @@ class BatchJobConfiguration {
                 .build();
     }
 
-    ItemReader<WebPage> reader() {
+    private ItemReader<WebPage> reader() {
         return new JpaPagingItemReaderBuilder<WebPage>()
                 .queryString("select w from WebPage w left join fetch w.priceDetails")
                 .entityManagerFactory(entityManagerFactory)
@@ -56,11 +55,11 @@ class BatchJobConfiguration {
                 .build();
     }
 
-    ItemProcessor<WebPage, WebPage> processor() {
+    private ItemProcessor<WebPage, WebPage> processor() {
         return new WebPageProcessor(priceExtractingService);
     }
 
-    ItemWriter<WebPage> webPageItemWriter() {
+    private ItemWriter<WebPage> webPageItemWriter() {
         return new JpaItemWriterBuilder<WebPage>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
