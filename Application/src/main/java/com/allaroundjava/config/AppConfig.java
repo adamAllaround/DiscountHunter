@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableBatchProcessing
-@ComponentScan(basePackages = {"com.allaroundjava.price.extract", "com.allaroundjava.batch"})
+@ComponentScan(basePackages = {"com.allaroundjava.price.extract", "com.allaroundjava.batch", "com.allaroundjava.user", "com.allaroundjava.webpage"})
 public class AppConfig {
 }

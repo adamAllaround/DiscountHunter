@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 public class TestJpaConfig extends JpaConfig {
@@ -17,5 +18,14 @@ public class TestJpaConfig extends JpaConfig {
                 .setType(EmbeddedDatabaseType.H2)
                 .addScript("org/springframework/batch/core/schema-h2.sql")
                 .build();
+    }
+
+    @Override
+    protected Properties createHibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("javax.persistence.schema-generation.database.action", "drop-and-create");
+        properties.setProperty(
+                "hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        return properties;
     }
 }

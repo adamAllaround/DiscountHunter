@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Component
 @Log4j2
-class HtmlDownloadService {
+public class HtmlDownloadService {
     private final int timeout;
 
     public HtmlDownloadService(@Value("${fetch.page.timeout.ms:10000}") Integer timeout) {
