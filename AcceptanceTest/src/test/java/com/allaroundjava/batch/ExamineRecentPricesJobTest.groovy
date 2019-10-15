@@ -3,6 +3,7 @@ package com.allaroundjava.batch
 import com.allaroundjava.config.AppConfig
 import com.allaroundjava.model.User
 import com.allaroundjava.model.WebPage
+import com.allaroundjava.price.WebPagePriceDetailsService
 import com.allaroundjava.price.extract.HtmlDownloadService
 import com.allaroundjava.price.extract.PriceExtractingService
 import com.allaroundjava.test.config.TestJpaConfig
@@ -30,6 +31,8 @@ class ExamineRecentPricesJobTest extends Specification {
     @Autowired
     private final WebPageService webPageService
     @Autowired
+    private final WebPagePriceDetailsService priceDetailsService
+    @Autowired
     private JobLauncherTestUtils jobLauncherTestUtils
 
     def "Launching the job with two WebPages records"() {
@@ -46,10 +49,8 @@ class ExamineRecentPricesJobTest extends Specification {
         when: "Launching job"
         jobLauncherTestUtils.launchJob()
         then: "Web Page Details Exist for both pages"
-        def retrievedWebPage1 = webPageService.findById(webPage1.getId()).get()
-        def retrievedWebPage2 = webPageService.findById(webPage2.getId()).get()
-        retrievedWebPage1.priceDetails.size() == 2
-        retrievedWebPage2.priceDetails.size() == 2
+        priceDetailsService.findByWebPage(webPage1).size() == 2
+        priceDetailsService.findByWebPage(webPage2).size() == 2
     }
 
     private static Optional<Document> createPageHtml() {

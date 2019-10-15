@@ -12,7 +12,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"com.allaroundjava.batch", "com.allaroundjava.user", "com.allaroundjava.webpage"})
+@EnableJpaRepositories(basePackages = {"com.allaroundjava.batch", "com.allaroundjava.user"
+        , "com.allaroundjava.webpage", "com.allaroundjava.price"})
 public class JpaConfig {
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory() {
