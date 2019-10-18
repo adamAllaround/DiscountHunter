@@ -41,8 +41,8 @@ class ExamineRecentPricesJobTest extends Specification {
         def webPage1 = new WebPage(userOwner: user, url: "http://www.example.com" )
         def webPage2 = new WebPage(userOwner: user, url: "http://www.example2.com" )
         userService.save(user)
-        webPageService.saveAndFlush(webPage1)
-        webPageService.saveAndFlush(webPage2)
+        webPageService.save(webPage1)
+        webPageService.save(webPage2)
 
         and: "Html download Service returning Html with two prices in it"
         htmlDownloadService.downloadDocument(_) >> createPageHtml()

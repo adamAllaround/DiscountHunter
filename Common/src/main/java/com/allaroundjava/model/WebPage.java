@@ -2,23 +2,27 @@ package com.allaroundjava.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 public class WebPage extends ModelBase {
-    @ManyToOne (optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "USER_ID")
     private User userOwner;
-    @OneToMany (mappedBy = "page")
-    private Set<WebPagePriceDetails> priceDetails;
+    @OneToMany(mappedBy = "page")
+    @Cascade({CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<WebPagePriceDetails> priceDetails = new LinkedHashSet<>();
     @Column(nullable = false)
     private String url;
 
