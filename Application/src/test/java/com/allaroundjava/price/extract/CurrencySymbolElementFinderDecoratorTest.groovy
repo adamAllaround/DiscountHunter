@@ -9,15 +9,16 @@ class CurrencySymbolElementFinderDecoratorTest extends Specification {
 
     def "Finding html elements containing currency symbols"() {
         given: "An html of several tags with price CSS class"
-        def htmlString = '<p class="product price"><span class="price">150EUR</span><span class="price discount">200EUR</span></p>'
+        def htmlString = '<p class="product price"><span class="price">150EUR</span><span class="price discount">200EUR</span><span>Now £10.50</span></p>'
         def document = Jsoup.parse(htmlString)
         htmlElementFinder.findHtmlElements(_) >> document.getAllElements()
         when: "Finding html elements with currency"
         def foundElements = currencySymbolFinder.findHtmlElements(document.getAllElements())
         then:
-        foundElements.size() == 2
+        foundElements.size() == 3
         foundElements.get(0).text() == "150EUR"
         foundElements.get(1).text() == "200EUR"
+        foundElements.get(2).text() == "Now £10.50"
     }
 
     def "Finding html elements when none contain currency symbols"() {
