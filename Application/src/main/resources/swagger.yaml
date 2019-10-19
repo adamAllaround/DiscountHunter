@@ -1,0 +1,85 @@
+openapi: 3.0.1
+info:
+  title: Discount Hunter API
+  description: This is a specification for Discount Hunter API which allows to control whichweb pages
+  are monitored for changing prices.
+  version: 1.0.0
+servers:
+  - url: 'https://localhost:8080'
+paths:
+  /webpages/{id}:
+    get:
+      tags:
+        - "Web Pages"
+      summary: Retrieve existing web page information along with its price details
+      description: ""
+      operationId: "getWebPage"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "Id of webpage to be retrieved"
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebPageDto'
+  /webpages:
+    post:
+      tags:
+        - "Web Pages"
+      summary: "Add a new web page to web page collection"
+      operationId: "addWebPage"
+      parameters:
+        - in: "body"
+          name: "WebPageDto"
+          description: "Web Page Object that should be added"
+          required: true
+          schema:
+            $ref: '#/components/schemas/WebPageDto'
+      responses:
+        201:
+          description: "Web Page Created"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebPageDto'
+  /priceDetails/{id}:
+    get:
+      summary: "Get all price details for specific web page"
+      operationId: "getPriceDetails"
+      parameters:
+        - in: "path"
+          name: "webPageId"
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: "Price details retrieved successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebPagePriceDetailsDto'
+components:
+  schemas:
+    WebPageDto:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+    WebPagePriceDetailsDto:
+      type: object
+      properties:
+        pageId:
+          type: integer
+        price:
+          type: integer
