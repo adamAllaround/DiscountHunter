@@ -49,8 +49,8 @@ class ExamineRecentPricesJobTest extends Specification {
         when: "Launching job"
         jobLauncherTestUtils.launchJob()
         then: "Web Page Details Exist for both pages"
-        priceDetailsService.findByWebPage(webPage1).size() == 2
-        priceDetailsService.findByWebPage(webPage2).size() == 2
+        priceDetailsService.findByWebPageId(webPage1.getId()).size() == 2
+        priceDetailsService.findByWebPageId(webPage2.getId()).size() == 2
     }
 
     private static Optional<Document> createPageHtml() {

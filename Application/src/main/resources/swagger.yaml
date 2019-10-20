@@ -48,7 +48,7 @@ paths:
           description: "Web Page Created"
           schema:
             $ref: '#/definitions/WebPageDto'
-  /priceDetails/{webPageId}:
+  /webPages/priceDetails/{webPageId}:
     get:
       summary: "Get all price details for specific web page"
       operationId: "getPriceDetails"
@@ -59,12 +59,14 @@ paths:
           name: "webPageId"
           required: true
           type: integer
-          format: int32
+          format: int64
       responses:
         200:
           description: "Price details retrieved successfully"
           schema:
-            $ref: '#/definitions/WebPagePriceDetailsDto'
+            type: "array"
+            items:
+              $ref: '#/definitions/WebPagePriceDetailsDto'
 definitions:
   WebPageDto:
     type: object
@@ -86,5 +88,6 @@ definitions:
         format: int64
       pageId:
         type: integer
+        format: int64
       price:
-        type: number
+        type: string

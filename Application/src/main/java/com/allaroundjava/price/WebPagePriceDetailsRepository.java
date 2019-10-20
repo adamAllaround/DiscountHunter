@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 interface WebPagePriceDetailsRepository extends JpaRepository<WebPagePriceDetails, Long> {
-    List<WebPagePriceDetails> findByPage(WebPage webPage);
+    List<WebPagePriceDetails> findByPageId(Long webPageId);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class WebPagePriceDetailsService {
     private final WebPagePriceDetailsRepository priceDetailsRepository;
 
-    public List<WebPagePriceDetails> findByWebPage(WebPage webPage) {
-        return priceDetailsRepository.findByPage(webPage);
+    public List<WebPagePriceDetails> findByWebPageId(Long webPageId) {
+        return priceDetailsRepository.findByPageId(webPageId);
     }
 }
