@@ -17,6 +17,9 @@
         <Logger name="org.springframework" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="org.springframework.security" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <Logger name="com.allaroundjava" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>

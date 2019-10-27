@@ -12,8 +12,6 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories(basePackages = {"com.allaroundjava.batch", "com.allaroundjava.user"
-        , "com.allaroundjava.webpage", "com.allaroundjava.price"})
 public class JpaConfig {
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -42,7 +40,7 @@ public class JpaConfig {
         return new HibernateJpaVendorAdapter();
     }
 
-    protected Properties createHibernateProperties() {
+    private Properties createHibernateProperties() {
         Properties properties = new Properties();
         properties.setProperty("javax.persistence.schema-generation.database.action", "none");
         properties.setProperty(
