@@ -38,7 +38,7 @@ class WebPageControllerIntegrationTest extends Specification {
         User user = new User(enabled: true, email: "adam@allaroundjava.com", password: BCrypt.hashpw("password", BCrypt.gensalt()))
         userService.save(user)
         when: "Posting new Web Page"
-        def responseEntity = restTemplate.withBasicAuth("adam@allaroundjava.com", "passaaword")
+        def responseEntity = restTemplate.withBasicAuth("adam@allaroundjava.com", "password")
         .postForEntity("/webPages", webPageDtoHttpEntity, WebPageDto, [:])
         then: "Status is unauthorized"
         responseEntity.statusCode == HttpStatus.CREATED
@@ -50,7 +50,7 @@ class WebPageControllerIntegrationTest extends Specification {
     }
 
     def "Getting a Web Page"() {
-        User user = new User(enabled: true, email: "adam@allaroundjava.com", password: "password")
+        User user = new User(enabled: true, email: "adam2@allaroundjava.com", password: "password")
         WebPage webPage = new WebPage(userOwner: user, url: "some.com")
         userService.save(user)
         webPageService.save(webPage)

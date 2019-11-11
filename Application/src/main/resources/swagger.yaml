@@ -11,6 +11,9 @@ tags:
     description: "Everything about Web Pages in the system"
 schemes:
   - http
+securityDefinitions:
+  basicAuth:
+    type: basic
 paths:
   /webPages/{id}:
     get:
@@ -36,6 +39,8 @@ paths:
       operationId: "addWebPage"
       produces:
         - application/json
+      security:
+        - basicAuth: []
       parameters:
         - in: "body"
           name: "WebPageDto"

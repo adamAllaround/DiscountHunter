@@ -1,5 +1,7 @@
 package com.allaroundjava.rest.webpage
 
+import com.allaroundjava.authentication.PrincipalFinder
+import com.allaroundjava.model.User
 import com.allaroundjava.model.WebPage
 import com.allaroundjava.model.WebPagePriceDetails
 import com.allaroundjava.price.WebPagePriceDetailsService
@@ -15,7 +17,8 @@ import spock.lang.Specification
 class WebPageControllerTest extends Specification {
     private WebPageService webPageService = Mock()
     private WebPagePriceDetailsService priceDetailsService = Mock()
-    private WebPageController webPageController = new WebPageController(webPageService, priceDetailsService)
+    private PrincipalFinder principalFinder = Mock()
+    private WebPageController webPageController = new WebPageController(webPageService, priceDetailsService, principalFinder)
     private MockMvc mockMvc
 
     void setup() {
@@ -47,6 +50,7 @@ class WebPageControllerTest extends Specification {
         def url = "http://example.com"
         def request = "{\"url\":\"${url}\"}"
         WebPage webPage = new WebPage(url: url)
+        principalFinder.getAuthenticatedUser() >> new User(email: "some@email.com",password: "password", enabled: true )
         when: "Persisting Web Page"
         webPageService.save(_) >> webPage
         then: "Status is 201 and Web Page is returned"

@@ -1,5 +1,7 @@
 package com.allaroundjava.rest.webpage;
 
+import com.allaroundjava.authentication.PrincipalFinder;
+import com.allaroundjava.model.User;
 import com.allaroundjava.model.WebPage;
 import com.allaroundjava.model.WebPagePriceDetails;
 import com.allaroundjava.price.WebPagePriceDetailsService;
@@ -21,10 +23,12 @@ import java.util.List;
 class WebPageController implements WebPagesApi {
     private final WebPageService webPageService;
     private final WebPagePriceDetailsService priceDetailsService;
+    private final PrincipalFinder principalFinder;
 
     @Override
     public ResponseEntity<WebPageDto> addWebPage(@Valid WebPageDto webPageDto) {
-        WebPage result = webPageService.save(WebPageDtoConverter.fromDto(webPageDto));
+        User authenticatedUser = principalFinder.getAuthenticatedUser();
+        WebPage result = webPageService.save(WebPageDtoConverter.fromDto(webPageDto, authenticatedUser));
         return ResponseEntity.status(HttpStatus.CREATED).body(WebPageDtoConverter.toDto(result));
     }
 
