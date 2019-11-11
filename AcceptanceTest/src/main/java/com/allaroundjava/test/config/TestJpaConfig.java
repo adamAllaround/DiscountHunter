@@ -29,7 +29,6 @@ public class TestJpaConfig {
     protected DataSource createDataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("org/springframework/batch/core/schema-h2.sql")
                 .build();
     }
 
