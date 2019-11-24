@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.crypto.bcrypt.BCrypt
 import spock.lang.Specification
+import spock.lang.Unroll
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = [TestJpaConfig, AppConfig, SecurityConfig])
@@ -32,16 +33,21 @@ class WebPageControllerIntegrationTest extends Specification {
     @Autowired
     private WebPageService webPageService
 
-    def "Posting for a new Web Page"() {
+    @Unroll
+    def "Posting for a new Web Page with #TEST_TYPE"() {
         def url = "http://someurl.com"
         def webPageDtoHttpEntity = createWebPageDtoHttpEntity(url)
-        User user = new User(enabled: true, email: "adam@allaroundjava.com", password: BCrypt.hashpw("password", BCrypt.gensalt()))
+        User user = new User(enabled: true, email: USER_EMAIL, password: BCrypt.hashpw("password", BCrypt.gensalt()))
         userService.save(user)
         when: "Posting new Web Page"
-        def responseEntity = restTemplate.withBasicAuth("adam@allaroundjava.com", "password")
-        .postForEntity("/webPages", webPageDtoHttpEntity, WebPageDto, [:])
+        def responseEntity = restTemplate.withBasicAuth(USER_EMAIL, PASSWORD)
+                .postForEntity("/webPages", webPageDtoHttpEntity, WebPageDto, [:])
         then: "Status is unauthorized"
-        responseEntity.statusCode == HttpStatus.CREATED
+        responseEntity.statusCode == HTTP_STATUS
+        where:
+        TEST_TYPE          | USER_EMAIL                  | PASSWORD      | HTTP_STATUS
+        "correct password" | "adam@allaroundjava.com"    | "password"    | HttpStatus.CREATED
+        "bad password"     | "someone@allaroundjava.com" | "this is bad" | HttpStatus.UNAUTHORIZED
     }
 
     private static HttpEntity<WebPageDto> createWebPageDtoHttpEntity(String url) {

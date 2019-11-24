@@ -84,7 +84,7 @@ definitions:
       url:
         type: string
     xml:
-      name: DoctorDto
+      name: WebPageDto
   WebPagePriceDetailsDto:
     type: object
     properties:
