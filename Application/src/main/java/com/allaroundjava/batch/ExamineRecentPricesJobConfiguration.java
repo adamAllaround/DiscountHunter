@@ -32,8 +32,7 @@ class ExamineRecentPricesJobConfiguration {
     public Job examineRecentPricesJob(Step fetchPricesStep) {
         return jobBuilderFactory.get("examineRecentPricesJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(fetchPricesStep)
-                .end()
+                .start(fetchPricesStep)
                 .build();
     }
 
