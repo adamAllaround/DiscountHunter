@@ -12,7 +12,9 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class WebPageControllerTest extends Specification {
     private WebPageService webPageService = Mock()
@@ -20,6 +22,8 @@ class WebPageControllerTest extends Specification {
     private PrincipalFinder principalFinder = Mock()
     private WebPageController webPageController = new WebPageController(webPageService, priceDetailsService, principalFinder)
     private MockMvc mockMvc
+    @Shared
+    private WebPage webPage = new WebPage(url: "http://example.com", priceProposal: 600)
 
     void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(webPageController).build()
@@ -35,7 +39,6 @@ class WebPageControllerTest extends Specification {
 
     def "Getting an existing resource"() {
         def url = "http://example.com"
-        WebPage webPage = new WebPage(url: url)
         when: "Requested resource exists"
         webPageService.findById(1L) >> Optional.of(webPage)
         then: "Requesting such resource results in ok"
@@ -46,19 +49,24 @@ class WebPageControllerTest extends Specification {
         println response.getResponse().contentAsString
     }
 
-    def "Posting a new web page resource"() {
+    @Unroll
+    def "Posting a new web page which price details #FOUND"() {
         def url = "http://example.com"
-        def request = "{\"url\":\"${url}\"}"
-        WebPage webPage = new WebPage(url: url)
+        def request = "{\"url\":\"${url}\", \"priceProposal\": 600}"
         principalFinder.getAuthenticatedUser() >> new User(email: "some@email.com",password: "password", enabled: true )
-        when: "Persisting Web Page"
-        webPageService.save(_) >> webPage
-        then: "Status is 201 and Web Page is returned"
+        when: "Price is found on page or not"
+        webPageService.getPageValidToSave(_ as WebPage) >> FIND_RESULT
+        then: "Status is #HTTP_STATUS and Web Page is returned"
         mockMvc.perform(MockMvcRequestBuilders.post("/webPages")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
-                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.status().is(HTTP_STATUS))
                 .andExpect(MockMvcResultMatchers.content().string(CoreMatchers.containsString(url)))
+        where:
+        FOUND           | FIND_RESULT          | HTTP_STATUS
+        'are found'     | Optional.of(webPage) | 201
+        'are not found' | Optional.empty()     | 422
+
     }
 
     def "Getting Non existent Web Page Price Details"() {
@@ -70,7 +78,7 @@ class WebPageControllerTest extends Specification {
     }
 
     def "Getting existing price details"() {
-        def webPage = new WebPage(url: "http://example.com")
+
         def priceDetails = [new WebPagePriceDetails(price: "120USD", page: webPage),
                             new WebPagePriceDetails(price: "7PLN", page: webPage)]
         when: "Web Page with Given Id exists"

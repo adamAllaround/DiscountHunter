@@ -13,6 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WebPageService {
     private final WebPageRepository webPageRepository;
+
     public WebPage save(WebPage webPage) {
         return webPageRepository.save(webPage);
     }
@@ -23,5 +24,9 @@ public class WebPageService {
 
     public void saveAll(List<? extends WebPage> list) {
         webPageRepository.saveAll(list);
+    }
+
+    public Optional<WebPage> getPageValidToSave(WebPage webPage) {
+        return Optional.empty();
     }
 }

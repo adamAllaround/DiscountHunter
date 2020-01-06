@@ -28,8 +28,19 @@ class WebPageController implements WebPagesApi {
     @Override
     public ResponseEntity<WebPageDto> addWebPage(@Valid WebPageDto webPageDto) {
         User authenticatedUser = principalFinder.getAuthenticatedUser();
-        WebPage result = webPageService.save(WebPageDtoConverter.fromDto(webPageDto, authenticatedUser));
-        return ResponseEntity.status(HttpStatus.CREATED).body(WebPageDtoConverter.toDto(result));
+
+        WebPage webPageCandidate = WebPageDtoConverter.fromDto(webPageDto, authenticatedUser);
+        return webPageService.getPageValidToSave(webPageCandidate)
+                .map(this::getCreatedHttpStatus)
+                .orElseGet(() -> getUnprocessableHttpStatus(webPageDto));
+    }
+
+    private ResponseEntity<WebPageDto> getCreatedHttpStatus(WebPage webPage) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(WebPageDtoConverter.toDto(webPage));
+    }
+
+    private ResponseEntity<WebPageDto> getUnprocessableHttpStatus(WebPageDto webPageCandidate) {
+        return ResponseEntity.unprocessableEntity().body(webPageCandidate);
     }
 
     @Override

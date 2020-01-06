@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class WebPage extends ModelBase {
     private Set<WebPagePriceDetails> priceDetails = new LinkedHashSet<>();
     @Column(nullable = false)
     private String url;
+
+    private BigDecimal priceProposal;
+
 
     @Override
     public boolean equals(Object o) {
