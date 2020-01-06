@@ -55,7 +55,7 @@ class WebPageControllerTest extends Specification {
         def request = "{\"url\":\"${url}\", \"priceProposal\": 600}"
         principalFinder.getAuthenticatedUser() >> new User(email: "some@email.com",password: "password", enabled: true )
         when: "Price is found on page or not"
-        webPageService.getPageValidToSave(_ as WebPage) >> FIND_RESULT
+        webPageService.addWebPageCandidate(_ as WebPage) >> FIND_RESULT
         then: "Status is #HTTP_STATUS and Web Page is returned"
         mockMvc.perform(MockMvcRequestBuilders.post("/webPages")
                 .contentType(MediaType.APPLICATION_JSON)

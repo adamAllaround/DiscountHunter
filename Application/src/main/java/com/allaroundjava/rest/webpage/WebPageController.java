@@ -30,7 +30,7 @@ class WebPageController implements WebPagesApi {
         User authenticatedUser = principalFinder.getAuthenticatedUser();
 
         WebPage webPageCandidate = WebPageDtoConverter.fromDto(webPageDto, authenticatedUser);
-        return webPageService.getPageValidToSave(webPageCandidate)
+        return webPageService.addWebPageCandidate(webPageCandidate)
                 .map(this::getCreatedHttpStatus)
                 .orElseGet(() -> getUnprocessableHttpStatus(webPageDto));
     }

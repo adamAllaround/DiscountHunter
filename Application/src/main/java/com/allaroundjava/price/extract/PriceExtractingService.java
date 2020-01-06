@@ -56,4 +56,8 @@ public class PriceExtractingService {
         webPagePriceDetails.setPrice(element.ownText());
         return webPagePriceDetails;
     }
+
+    public Set<WebPagePriceDetails> findPriceDetailsMatchingPrice(WebPage webPage) {
+        return null;
+    }
 }
