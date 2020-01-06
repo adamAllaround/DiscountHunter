@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -25,9 +26,10 @@ public class PriceExtractingService {
     public PriceExtractingService(HtmlDownloadService htmlDownloadService, @Value("${max.price.tags.found:3}") int maxNumOfFoundPriceElements) {
         this.maxNumOfFoundPriceElements = maxNumOfFoundPriceElements;
         this.htmlDownloadService = htmlDownloadService;
-        this.htmlElementFinder = new ValidNumberElementFinderDecorator(
+        this.htmlElementFinder = new ExactValueFinder(
+                new ValidNumberElementFinderDecorator(
                 new CurrencySymbolElementFinderDecorator(
-                        new CssClassElementFinder()));
+                        new CssClassElementFinder())));
     }
 
     public WebPage extractPrices(WebPage webPage) {
@@ -51,6 +53,7 @@ public class PriceExtractingService {
     }
 
     private WebPagePriceDetails toWebPagePriceDetails(Element element, WebPage webPage) {
+        //TODO - map the path from element to root and store it
         WebPagePriceDetails webPagePriceDetails = new WebPagePriceDetails();
         webPagePriceDetails.setPage(webPage);
         webPagePriceDetails.setPrice(element.ownText());
@@ -58,6 +61,12 @@ public class PriceExtractingService {
     }
 
     public Set<WebPagePriceDetails> findPriceDetailsMatchingPrice(WebPage webPage) {
-        return null;
+        log.debug("Attempting to find price of {} on {}", webPage.getPriceProposal(), webPage.getUrl());
+        Optional<Document> document = htmlDownloadService.downloadDocument(webPage.getUrl());
+        return document.map(doc -> htmlElementFinder.findHtmlElements(doc.getElementsByTag(BODY_TAG)))
+                .filter(this::lessThanMaxNumElements)
+                .map(elements -> mapToWebPagePriceDetails(elements, webPage))
+                .orElse(Collections.emptySet());
     }
+
 }
